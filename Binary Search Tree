@@ -1,0 +1,123 @@
+#include<iostream>
+#include<fstream>
+using namespace std;
+template< class  ItemType >
+struct TreeNode {
+ItemType info;// Data member
+TreeNode<ItemType>*  left;// Pointer to left child
+TreeNode<ItemType>*  right; // Pointer to right child
+};
+template< class  ItemType >
+class TreeType {
+public:   
+TreeType ( ) ;   // constructor
+~TreeType ( ) ;         // destructor
+bool IsEmpty ( )  ;
+bool IsFull ( )  ;
+int NumberOfNodes ( ) ;
+void   InsertItem ( ItemType item ) ;
+void   DeleteItem (ItemType item ) ;
+void   RetrieveItem ( ItemType&  item ,  bool&  found ) ; 
+void   PrintTree (ofstream&  outFile)    ;
+private:
+TreeNode<ItemType>* root ;
+};
+template< class  ItemType >
+void   PrintHelper ( TreeNode<ItemType>* ptr, ofstream&  outFile ) ;       
+template< class  ItemType >
+void   InsertHelper ( TreeNode<ItemType>*&  ptr, ItemType item ) ;       
+template< class  ItemType >
+void  RetrieveHelper ( TreeNode<ItemType>* ptr,  ItemType&  item,  
+bool&  found ) ;
+template< class  ItemType >
+void   DestroyHelper ( TreeNode<ItemType>* ptr ) ; 
+template< class  ItemType >
+TreeType<ItemType> :: TreeType ( ) // constructor
+{
+root = NULL ;
+}
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+template< class  ItemType >
+bool TreeType<ItemType> :: IsEmpty()
+{
+return ( root == NULL ) ;
+}
+template< class  ItemType >
+void   TreeType<ItemType> :: InsertItem ( ItemType item )
+{
+InsertHelper ( root, item ) ;
+}
+template< class  ItemType >
+void   InsertHelper ( TreeNode<ItemType>*&  ptr,   ItemType item )
+{      if  ( ptr == NULL )  
+{// INSERT item HERE AS LEAF
+ptr = new TreeNode<ItemType> ;
+ptr->right = NULL ;
+ptr->left = NULL ;
+ptr->info = item ;
+}
+else if  ( item  <  ptr->info )// GO LEFT
+InsertHelper( ptr->left , item ) ;
+else if  ( item  >  ptr->info ) // GO RIGHT
+InsertHelper( ptr->right , item ) ;
+}
+template< class  ItemType >
+void   TreeType<ItemType> :: RetrieveItem ( ItemType&  item, 
+bool&   found )
+{
+RetrieveHelper ( root, item,  found ) ;
+}
+template< class  ItemType >
+void  RetrieveHelper ( TreeNode<ItemType>* ptr, ItemType&  item,  
+bool&   found)
+{      if  ( ptr == NULL )    
+found = false ;
+else if  ( item  <  ptr->info )// GO LEFT
+RetrieveHelper( ptr->left , item,  found ) ;
+else if  ( item  >  ptr->info ) // GO RIGHT
+RetrieveHelper( ptr->right , item,  found ) ;
+else
+{     item = ptr->info ;
+found = true ;
+}
+}
+template< class  ItemType >
+void   TreeType<ItemType> :: PrintTree ( ofstream&  outFile )  
+{
+PrintHelper ( root,  outFile ) ;
+}
+template< class  ItemType >
+void   PrintHelper ( TreeNode<ItemType>* ptr,  ofstream&  outFile )
+{      if  ( ptr != NULL )    
+{
+PrintHelper( ptr->left , outFile ) ;// Print left subtree
+outFile <<  ptr->info ;
+PrintHelper( ptr->right, outFile ) ;
+}
+}
+template< class  ItemType >
+TreeType<ItemType> :: ~TreeType (  )// DESTRUCTOR
+{
+DestroyHelper ( root ) ;
+}
+template< class  ItemType >
+void   DestroyHelper ( TreeNode<ItemType>* ptr )
+// Post:  All nodes of the tree pointed to by ptr are deallocated.
+{      if  ( ptr != NULL )    
+{
+DestroyHelper ( ptr->left ) ;
+DestroyHelper ( ptr->right ) ;
+delete  ptr ;
+}
+}
+int main()
+{
+	int a, b, c;
+	TreeType<int, int, int> obj;
+	ifstream file;
+	file.open("TreeFile.txt");
+	while(!file.eof())
+	{
+			//Enter file data reading material algo  :-)
+	}
+}
